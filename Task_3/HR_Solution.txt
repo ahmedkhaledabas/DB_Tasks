@@ -1,0 +1,73 @@
+
+create database HR
+use HR
+create table Regions(
+Region_ID int primary key identity,
+Region_Name varchar(25));
+
+create table Countries(
+Country_ID char(2) primary key,
+Country_Name varchar(40) ,
+Region_ID int not null,
+foreign key (Region_ID) references Regions(Region_ID));
+
+
+create table Locations(
+Location_ID int primary key identity,
+Street_Address varchar(25) ,
+Postal_Code varchar(12) ,
+City varchar(30) ,
+State_Province varchar(12) ,
+Country_ID char(2) not null,
+foreign key (Country_ID) references Countries(Country_ID));
+
+create table Jobs(
+Job_ID varchar(10) primary key,
+Job_Title varchar(35),
+Min_Salary int ,
+Max_Salary int );
+
+create table Job_Grades(
+Grade_Level varchar(2),
+Lowest_Sal int,
+Highest_Sal int )
+
+create table Managers(
+Manager_ID int primary key identity,
+Manager_Name varchar(20));
+
+create table Departments(
+Department_ID int primary key identity,
+Department_Name varchar(20),
+Manager_ID int not null,
+Location_ID int not null,
+foreign key (Manager_ID) references Managers (Manager_ID),
+foreign key (Location_ID) references Locations (Location_ID)
+);
+
+create table Employees(
+Employee_ID int primary key identity,
+First_Name varchar(20),
+Last_Name varchar(25),
+Email varchar(25),
+Phone_Number varchar(20),
+Hire_Date datetime ,
+Job_ID varchar(10) not null,
+Salary decimal,
+Commission_PCT decimal,
+Manager_ID int not null,
+Department_ID int not null,
+foreign key (Job_ID) references Jobs (Job_ID),
+foreign key (Manager_ID) references Managers (Manager_ID),
+foreign key (Department_ID) references Departments (Department_ID));
+
+create table Job_History(
+Employee_ID int ,
+Start_Date datetime ,
+End_Date datetime,
+Job_ID varchar(10),
+Department_ID int not null,
+primary key(Employee_ID ,Start_Date),
+foreign key (Employee_ID) references Employees (Employee_ID),
+foreign key (Job_ID) references Jobs (Job_ID),
+foreign key (Department_ID) references Departments (Department_ID));
