@@ -85,3 +85,28 @@ where ID=2000;
 
 delete from Patients
 where UR_Number = 2001;
+
+with cte_patient_doctor (PatientID , PatientName , DoctorName)as(
+select pd.Patient_UR_Number , p.Name , d.Name 
+from PrimaryDoctor pd join Patients p
+on p.UR_Number = pd.Patient_UR_Number
+join Doctors d 
+on d.ID = pd.Doctor_ID
+)
+select PatientID , PatientName , DoctorName
+from cte_patient_doctor;
+
+begin transaction
+insert into Doctors
+values(2022,'Ahmed Kh','ah@gmail.com','0128343',
+'IS','Expert');
+insert into Patients
+values
+(2033,'Khaled','Cairo','Giza','Tersa',27,
+'ahmeee@gmail.com','0128434','2X5435QP30HK69' );
+commit;
+
+select * from Doctor_Patient_info
+
+create index Phone_index
+on Patients(Phone);
